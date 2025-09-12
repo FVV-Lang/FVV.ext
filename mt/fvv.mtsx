@@ -1,5 +1,5 @@
 {
-	name: ["FVV", ".fvv", ".fw"]
+	name: ["FVV", ".fvv", ".fw", ".fww"]
 	comment: {startsWith: "<", endsWith: ">"}
 	contains: [
 		{builtin: #JAVA_QUOTED_STRING#}
