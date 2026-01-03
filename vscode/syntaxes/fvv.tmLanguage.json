@@ -1,148 +1,124 @@
 {
-	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
-	"patterns": [
-		{
-			"include": "#value"
-		}
-	],
-	"repository": {
-		"value": {
-			"patterns": [
-				{
-					"include": "#comment"
-				},
-				{
-					"include": "#string"
-				},
-				{
-					"include": "#constant"
-				},
-				{
-					"include": "#number"
-				},
-				{
-					"include": "#assignment"
-				},
-				{
-					"include": "#array"
-				},
-				{
-					"include": "#object"
-				}
-			]
-		},
-		"object": {
-			"patterns": [
-				{
-					"name": "meta.structure.dictionary.fvv",
-					"begin": "\\{",
-					"beginCaptures": {
-						"0": {
-							"name": "punctuation.definition.dictionary.begin.fvv"
-						}
-					},
-					"end": "\\}",
-					"endCaptures": {
-						"0": {
-							"name": "punctuation.definition.dictionary.end.fvv"
-						}
-					},
-					"patterns": [
-						{
-							"include": "#value"
-						}
-					]
-				}
-			]
-		},
-		"array": {
-			"patterns": [
-				{
-					"name": "meta.structure.array.fvv",
-					"begin": "\\[",
-					"beginCaptures": {
-						"0": {
-							"name": "punctuation.definition.array.begin.fvv"
-						}
-					},
-					"end": "\\]",
-					"endCaptures": {
-						"0": {
-							"name": "punctuation.definition.array.end.fvv"
-						}
-					},
-					"patterns": [
-						{
-							"include": "#value"
-						},
-						{
-							"name": "punctuation.separator.array.fvv",
-							"match": ","
-						}
-					]
-				}
-			]
-		},
-		"comment": {
-			"patterns": [
-				{
-					"name": "comment.block.fvv",
-					"begin": "<",
-					"end": ">"
-				}
-			]
-		},
-		"constant": {
-			"patterns": [
-				{
-					"name": "constant.language.fvv",
-					"match": "\\b(?:true|false)\\b"
-				}
-			]
-		},
-		"assignment": {
-			"patterns": [
-				{
-					"name": "meta.assignment.fvv",
-					"match": "([^=\\s]+)\\s*(=)",
-					"captures": {
-						"1": {
-							"name": "variable.other.member.fvv"
-						},
-						"2": {
-							"name": "keyword.operator.assignment.fvv"
-						}
-					}
-				},
-				{
-					"name": "punctuation.terminator.statement.fvv",
-					"match": ";|(?=$)"
-				}
-			]
-		},
-		"string": {
-			"patterns": [
-				{
-					"name": "string.quoted.double.fvv",
-					"begin": "\"",
-					"end": "\"",
-					"patterns": [
-						{
-							"name": "constant.character.escape.fvv",
-							"match": "\\\\."
-						}
-					]
-				}
-			]
-		},
-		"number": {
-			"patterns": [
-				{
-					"name": "constant.numeric.fvv",
-					"match": "\\b[+-]?\\d+(?:\\.\\d+)?\\b"
-				}
-			]
-		}
-	},
-	"scopeName": "source.fvv"
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "patterns": [
+    { "include": "#comment" },
+    { "include": "#string" },
+    { "include": "#number" },
+    { "include": "#constant" },
+    { "include": "#propKey" },
+    { "include": "#operator" },
+    { "include": "#variable" },
+    { "include": "#punctuation" }
+  ],
+  "repository": {
+    "comment": {
+      "patterns": [
+        {
+          "name": "comment.block.fvv",
+          "begin": "<",
+          "end": ">"
+        }
+      ]
+    },
+    "string": {
+      "patterns": [
+        {
+          "name": "string.quoted.raw.fvv",
+          "begin": "`",
+          "end": "`"
+        },
+        {
+          "name": "string.quoted.other.fullwidth.fvv",
+          "begin": "“",
+          "end": "”",
+          "patterns": [
+            {
+              "name": "constant.character.escape.fvv",
+              "match": "\\\\."
+            }
+          ]
+        },
+        {
+          "name": "string.quoted.double.fvv",
+          "begin": "\"",
+          "end": "\"",
+          "patterns": [
+            {
+              "name": "constant.character.escape.fvv",
+              "match": "\\\\."
+            }
+          ]
+        }
+      ]
+    },
+    "number": {
+      "patterns": [
+        {
+          "name": "constant.numeric.hex.fvv",
+          "match": "\\b0[xX][0-9a-fA-F]+\\b"
+        },
+        {
+          "name": "constant.numeric.binary.fvv",
+          "match": "\\b0[bB][01]+\\b"
+        },
+        {
+          "name": "constant.numeric.octal.fvv",
+          "match": "\\b(0[oO][0-7]+|0[0-7]+)\\b"
+        },
+        {
+          "name": "constant.numeric.float.fvv",
+          "match": "(?<![^\\s\\W])-?\\d+(?:['’]\\d+)*\\.\\d+(?:['’]\\d+)*([eE][+-]?\\d+)?"
+        },
+        {
+          "name": "constant.numeric.integer.fvv",
+          "match": "(?<![^\\s\\W])-?\\d+(?:['’]\\d+)*"
+        }
+      ]
+    },
+    "constant": {
+      "match": "(?i)\\b(?:true|false)\\b",
+      "name": "constant.language.boolean.fvv"
+    },
+    "propKey": {
+      "match": "([^=<>:：+\\.,，;；\\[\\]［］\\{\\}｛｝\"“`'’\\s]+)(?=\\s*(?:\\.\\s*[^=<>:：+\\.,，;；\\[\\]［］\\{\\}｛｝\"“`'’\\s]+\\s*)*[=:：])",
+      "name": "support.type.property-name.fvv"
+    },
+    "operator": {
+      "patterns": [
+        {
+          "name": "keyword.operator.assignment.fvv",
+          "match": "[=:：]"
+        },
+        {
+          "name": "keyword.operator.arithmetic.fvv",
+          "match": "[+\\-]"
+        },
+        {
+          "name": "keyword.operator.accessor.fvv",
+          "match": "\\."
+        }
+      ]
+    },
+    "punctuation": {
+      "patterns": [
+        {
+          "name": "punctuation.separator.fvv",
+          "match": "[,，;；]"
+        },
+        {
+          "name": "punctuation.section.block.begin.fvv",
+          "match": "[\\{｛\\[［]"
+        },
+        {
+          "name": "punctuation.section.block.end.fvv",
+          "match": "[\\}｝\\]］]"
+        }
+      ]
+    },
+    "variable": {
+      "match": "[^=<>:：+\\.,，;；\\[\\]［］\\{\\}｛｝\"“`'’\\s]+",
+      "name": "variable.other.readwrite.fvv"
+    }
+  },
+  "scopeName": "source.fvv"
 }

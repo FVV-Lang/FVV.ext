@@ -1,9 +1,45 @@
 {
 	name: ["FVV", ".fvv", ".fw", ".fww"]
 	comment: {startsWith: "<", endsWith: ">"}
+	bracketPairs: ["{}", "｛｝", "[]", "［］"]
+	defines: [
+		"id_chars": /[^=<>:：+\.,，;；\[\]［］\{\}｛｝"“`'’\s-]/
+	]
 	contains: [
-		{builtin: #JAVA_QUOTED_STRING#}
-		{builtin: #NORMAL_NUMBER#}
-		{match: keywordsToRegex("true false"), 0: "keyword"}
+		{
+			start: {match: /</}
+			end: {match: />/}
+			style: "comment"
+		}
+		{
+			start: {match: /`/}
+			end: {match: /`/}
+			style: "string"
+		}
+		{
+			start: {match: /“/}
+			end: {match: /”/}
+			style: "string"
+			contains: [{match: /\\./, 0: "strEscape"}]
+		}
+		{builtin: #JAVA_DOUBLE_QUOTED_STRING#}
+		{
+			match: /(?<!include("id_chars"))-?\d+(?:['’]\d+)*\.\d+(?:['’]\d+)*([eE][+-]?\d+)?/
+			0: "number"
+		}
+		{match: /\b0[xX][0-9a-fA-F]+\b/, 0: "number"}
+		{match: /\b0[oO][0-7]+\b|\b0[0-7]+\b/, 0: "number"}
+		{match: /\b0[bB][01]+\b/, 0: "number"}
+		{
+			match: /(?<!include("id_chars"))-?\d+(?:['’]\d+)*/
+			0: "number"
+		}
+		{match: /(?i)\b(?:true|false)\b/, 0: "keyword"}
+		{
+			match: include("id_chars") + /+(?=\s*(?:\.\s*/ + include("id_chars") + /+\s*)*[=:：])/
+			0: "propKey"
+		}
+		{match: /[=:：+\-.,，;；\[\]［］\{\}｛｝]/, 0: "operator"}
+		{match: include("id_chars") + /+/, 0: "variable"}
 	]
 }
