@@ -2,12 +2,13 @@
 	"name": "fvv",
 	"displayName": "FVV Language",
 	"description": "FVV Language for VS Code",
+	"icon": "128x128.webp",
 	"version": "2.0.0",
 	"publisher": "ShIroRRen",
 	"license": "F2DLPRL",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/OOM-WG/FVV.git"
+		"url": "https://github.com/FVV-Lang/FVV.ext"
 	},
 	"engines": {
 		"vscode": "^0.10.0"
